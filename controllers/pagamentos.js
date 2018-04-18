@@ -7,4 +7,15 @@ module.exports = function (app) {
         //dando uma reposta para página
         res.send('OK');
     });
+
+    //receber os dados para criar o pagamento
+    app.post('/pagamentos/pagamento', function (req,res) {
+
+       //o pagamento é recebido pelo body
+       var pagamento =  req.body;
+       console.log(pagamento);
+
+       res.send('OK');
+    });
 }
+
