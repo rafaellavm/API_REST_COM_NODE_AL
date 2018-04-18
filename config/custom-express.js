@@ -8,7 +8,7 @@ module.exports = function(){
     var app = express();
 
     app.use(bodyParser.urlencoded({extended: true})); //
-    app.use(bodyParser.json()); //faz parser de json
+    app.use(bodyParser.json()); //faz parser de json, faz parser de um corpo de requisição
 
     consign()
     .include('controllers') //a pasta controller deve ser carregada dentro da variável 'app' assim que subir 

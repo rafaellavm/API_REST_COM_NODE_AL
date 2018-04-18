@@ -13,9 +13,12 @@ module.exports = function (app) {
 
        //o pagamento é recebido pelo body
        var pagamento =  req.body;
-       console.log(pagamento);
+       console.log('processando a requisicao de um novo pagamento');
 
-       res.send('OK');
+       pagamento.status = 'CRIADO';
+       pagamento.data = new Date();
+
+       res.send(pagamento);
     });
 }
 
