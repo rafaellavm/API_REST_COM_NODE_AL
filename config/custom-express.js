@@ -12,6 +12,7 @@ module.exports = function(){
 
     consign()
     .include('controllers') //a pasta controller deve ser carregada dentro da variável 'app' assim que subir 
+    .then('persistencia') //inclui também a pasta 'persistencia'
     .into(app);
 
     return app;
