@@ -22,11 +22,15 @@ module.exports = function (app) {
        var pagamentoDAO = new app.persistencia.PagamentoDao(connection); //Criando uma nova instância do pagamentodao. Caminho do arquivo do PagamentoDao, é invocada através do app
 
        pagamentoDAO.salva(pagamento, function(erro,resultado){
+
+        if(erro){
+            res.send(erro);
+        }else{
            console.log('Pagamento criado');
            res.json(pagamento)
+        }
        });
 
-       res.send(pagamento);
     });
 }
 

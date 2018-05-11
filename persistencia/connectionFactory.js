@@ -1,21 +1,21 @@
-/*var mysql  = require('mysql');
+var mysql = require('mysql');
 
-  function createDBConnection(){
-    return mysql.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: '',
-            port: '3306',
-            database: 'payfast'
-        });
-  }
+function createDBConnection() {
+  return mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    port: '3306',
+    database: 'payfast'
+  });
+}
 
-  module.exports = function() {
-    return createDBConnection;
-  }*/
+module.exports = function () {
+  return createDBConnection;
+}
 
 
-var sql = require("mssql");
+/*var sql = require("mssql");
 
 var config = {
   user: 'IBGE\rafaela.m.allen',
@@ -36,6 +36,6 @@ function createDBConnection() {
 
 module.exports = function () {
   return createDBConnection;
-}
+}*/
 
 
