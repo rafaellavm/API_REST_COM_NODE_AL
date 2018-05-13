@@ -4,4 +4,4 @@ curl http://localhost:4800/pagamentos/pagamento -X POST -v -H "Content-type: app
 
 curl http://localhost:4800/pagamentos/pagamento -X POST -v -H "Content-type: application/json" -d @files/pagamento.json | json_pp
 
-
+curl -X PUT http://localhost:4800/pagamentos/pagamento/5 -v
