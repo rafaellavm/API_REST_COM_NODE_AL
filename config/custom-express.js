@@ -12,7 +12,7 @@ module.exports = function(){
     app.use(bodyParser.json()); //faz parser de json, faz parser de um corpo de requisição
     app.use(expressValidator()); //lib para validaçoes
 
-    consign()
+    consign() //gerencia diretórios da aplicação
     .include('controllers') //a pasta controller deve ser carregada dentro da variável 'app' assim que subir 
     .then('persistencia') //inclui também a pasta 'persistencia'
     .into(app);

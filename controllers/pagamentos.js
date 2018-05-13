@@ -1,4 +1,3 @@
-
 //fica disponível pra ser utilizado (module.exports)
 module.exports = function (app) {
     app.get('/pagamentos', function (req, res) {
@@ -6,6 +5,29 @@ module.exports = function (app) {
         console.log('Recebida requisição de teste na porta 4800');
         //dando uma reposta para página
         res.send('OK');
+    });
+
+    app.put('/pagamentos/pagamento/:id',function(req,res){
+
+        var pagamento = {};
+
+        var id = req.params.id; //id que vem da url
+
+        pagamento.id = id;
+        pagamento.status = 'CONFIRMADO';
+
+        var connection = app.persistencia.connectionFactory(); 
+        var pagamentoDAO = new app.persistencia.PagamentoDao(connection); 
+
+        pagamentoDAO.atualiza(pagamento, function(erro){
+
+            if(erro){
+                res.status(500).send(erro);
+                return;
+            }
+
+            res.send(pagamento);
+        });
     });
 
     //receber os dados para criar o pagamento
@@ -16,7 +38,7 @@ module.exports = function (app) {
         req.assert("valor", "Valor é obrigatório e deve ser um decimal").notEmpty().isFloat();
         var erros = req.validationErrors();
 
-        if(erros){
+        if (erros) {
             console.log("Erros de validação encontrados");
             res.status(400).send(erros);
             return;
@@ -45,5 +67,5 @@ module.exports = function (app) {
         });
 
     });
+    
 }
-
