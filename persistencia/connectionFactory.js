@@ -4,9 +4,10 @@ function createDBConnection() {
   return mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: 'rafa123',
     port: '3306',
-    database: 'payfast'
+    database: 'payfast',
+    insecureAuth : true
   });
 }
 

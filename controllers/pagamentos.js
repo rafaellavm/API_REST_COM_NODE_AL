@@ -36,10 +36,11 @@ module.exports = function (app) {
 
             if (erro) {
                 console.log('Erro ao inserir no banco:', erro);
-                res.status(400).send(erro);
+                res.status(500).send(erro); //erro interno do servidor
             } else {
                 console.log('Pagamento criado');
-                res.json(pagamento)
+                res.location('/pagamentos/pagamento/' + resultado.insertId); //retorna o id do registro criado
+                res.status(201).json(pagamento); //status 201 = created
             }
         });
 
