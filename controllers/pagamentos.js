@@ -79,12 +79,34 @@ module.exports = function (app) {
         pagamentoDAO.salva(pagamento, function (erro, resultado) {
 
             if (erro) {
+                
                 console.log('Erro ao inserir no banco:', erro);
                 res.status(500).send(erro); //erro interno do servidor
+
             } else {
+
+                pagamento.id = resultado.insertId;
+
+                var response = {
+                    dados_do_pagamento: pagamento,
+                    links: [
+                        {
+                            href: "http://localhost:4800/pagamentos/pagamento/" + pagamento.id,
+                            rel: "confirmar",
+                            method: "PUT"
+                        },
+                        {
+                            href: "http://localhost:4800/pagamentos/pagamento/" + pagamento.id,
+                            rel: "cancelar",
+                            method: "DELETE"
+                        }
+                    ]
+
+                };
+                
                 console.log('Pagamento criado');
-                res.location('/pagamentos/pagamento/' + resultado.insertId); //retorna o id do registro criado
-                res.status(201).json(pagamento); //status 201 = created
+                res.location('/pagamentos/pagamento/' + pagamento.id); //retorna o id do registro criado
+                res.status(201).json(response); //status 201 = created
             }
         });
 
