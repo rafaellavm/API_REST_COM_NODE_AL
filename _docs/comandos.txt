@@ -7,3 +7,5 @@ curl http://localhost:4800/pagamentos/pagamento -X POST -v -H "Content-type: app
 curl -X PUT http://localhost:4800/pagamentos/pagamento/5 -v
 
 curl -X DELETE http://localhost:4800/pagamentos/pagamento/1 -v
+
+curl http://localhost:3001/cartoes/autoriza -X POST -v -H "Content-type: application/json" -d @cartoes/files/cartao.json | json_pp
