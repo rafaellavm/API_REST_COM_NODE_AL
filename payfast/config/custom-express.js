@@ -14,7 +14,8 @@ module.exports = function(){
 
     consign() //gerencia diretórios da aplicação
     .include('controllers') //a pasta controller deve ser carregada dentro da variável 'app' assim que subir 
-    .then('persistencia') //inclui também a pasta 'persistencia'
+    .then('persistencia') //inclui também a pasta 'persistencia' dentro do app pelo express
+    .then('servicos')
     .into(app);
 
     return app;

@@ -41,10 +41,10 @@ module.exports = function (app) {
         var connection = app.persistencia.connectionFactory();
         var pagamentoDao = new app.persistencia.PagamentoDao(connection);
 
-        pagamentoDao.atualiza(pagamento, function(erro){
-            if (erro){
-              res.status(500).send(erro);
-              return;
+        pagamentoDao.atualiza(pagamento, function (erro) {
+            if (erro) {
+                res.status(500).send(erro);
+                return;
             }
             console.log('pagamento cancelado');
             res.status(204).send(pagamento);
@@ -79,42 +79,55 @@ module.exports = function (app) {
         pagamentoDAO.salva(pagamento, function (erro, resultado) {
 
             if (erro) {
-                
+
                 console.log('Erro ao inserir no banco:', erro);
                 res.status(500).send(erro); //erro interno do servidor
 
             } else {
 
-                pagamento.id = resultado.insertId;
+                pagamento.id = resultado.insertId; //guarda o id salvo
 
-                if(pagamento.forma_de_pagamento = 'cartao'){
+                //verifica se no json do pagamento tem o cartão
+                if (pagamento.forma_de_pagamento = 'cartao') {
 
                     var cartao = req.body['cartao'];
-                    console.log(cartao);
-                    res.status(201).json(cartao); //status 201 = created
-                    return;cartao
+                    
+                    var clienteCartoes = new app.servicos.clienteCartoes;
+                    clienteCartoes.autoriza(cartao, function (exception, request, response, retorno) {
+                        
+                        console.log(retorno);
+
+                        res.status(201).json(retorno); //status 201 = created
+                        return;
+
+                    });
+
+
+                } else {
+
+                    res.location('/pagamentos/pagamento/' + pagamento.id); //retorna o id do registro criado
+
+                    var response = {
+                        dados_do_pagamento: pagamento,
+                        links: [{
+                                href: "http://localhost:4800/pagamentos/pagamento/" + pagamento.id,
+                                rel: "confirmar",
+                                method: "PUT"
+                            },
+                            {
+                                href: "http://localhost:4800/pagamentos/pagamento/" + pagamento.id,
+                                rel: "cancelar",
+                                method: "DELETE"
+                            }
+                        ]
+
+                    };
+
+                    console.log('Pagamento criado');
+
+                    res.status(201).json(response); //status 201 = created
                 }
 
-                var response = {
-                    dados_do_pagamento: pagamento,
-                    links: [
-                        {
-                            href: "http://localhost:4800/pagamentos/pagamento/" + pagamento.id,
-                            rel: "confirmar",
-                            method: "PUT"
-                        },
-                        {
-                            href: "http://localhost:4800/pagamentos/pagamento/" + pagamento.id,
-                            rel: "cancelar",
-                            method: "DELETE"
-                        }
-                    ]
-
-                };
-                
-                console.log('Pagamento criado');
-                res.location('/pagamentos/pagamento/' + pagamento.id); //retorna o id do registro criado
-                res.status(201).json(response); //status 201 = created
             }
         });
 
