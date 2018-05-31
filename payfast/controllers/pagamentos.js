@@ -88,16 +88,45 @@ module.exports = function (app) {
                 pagamento.id = resultado.insertId; //guarda o id salvo
 
                 //verifica se no json do pagamento tem o cartão
-                if (pagamento.forma_de_pagamento = 'cartao') {
+                if (pagamento.forma_de_pagamento == 'cartao') {
 
                     var cartao = req.body['cartao'];
                     
                     var clienteCartoes = new app.servicos.clienteCartoes;
                     clienteCartoes.autoriza(cartao, function (exception, request, response, retorno) {
-                        
-                        console.log(retorno);
 
-                        res.status(201).json(retorno); //status 201 = created
+                        if(exception){
+                            console.log(exception);
+                            
+                            res.status(400).send(exception);
+                            return;
+                        }
+
+                        else{
+
+                            console.log(retorno);
+                            
+                            res.location('/pagamentos/pagamento/' + pagamento.id); //retorna o id do registro criado
+
+                            var response = {
+                                dados_do_pagamento: pagamento,
+                                cartao:retorno,
+                                links: [{
+                                        href: "http://localhost:4800/pagamentos/pagamento/" + pagamento.id,
+                                        rel: "confirmar",
+                                        method: "PUT"
+                                    },
+                                    {
+                                        href: "http://localhost:4800/pagamentos/pagamento/" + pagamento.id,
+                                        rel: "cancelar",
+                                        method: "DELETE"
+                                    }
+                                ]
+        
+                            };
+                        }
+
+                        res.status(201).json(response); //status 201 = created
                         return;
 
                     });

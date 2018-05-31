@@ -1,7 +1,7 @@
 {
    "pagamento": {
         "forma_de_pagamento": "cartao",
-        "valor": 450,
+        "valor": 908,
         "moeda": "BRA",
         "descricao": "criando um pagamento"
     }, 
