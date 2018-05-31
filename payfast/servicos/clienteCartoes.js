@@ -1,13 +1,10 @@
-let restify = require('restify');
 let clients = require('restify-clients');
 
-//funçao construtora
 function CartoesClient() {
 
   //pegar a url do cliente. Criando um cliente
   this._cliente = clients.createJsonClient({
-    url: 'http://localhost:3001' //,
-    //version: '*'
+    url: 'http://localhost:3001'
   });
 }
 

@@ -60,13 +60,15 @@ module.exports = function (app) {
         req.assert("pagamento.valor", "Valor é obrigatório e deve ser um decimal").notEmpty().isFloat();
         var erros = req.validationErrors();
 
+        
+        //1) verifica erros de validação do json
         if (erros) {
             console.log("Erros de validação encontrados");
             res.status(400).send(erros);
             return;
         }
 
-        //o pagamento é recebido pelo body
+        //o json do pagamento é recebido pelo body
         var pagamento = req.body['pagamento'];
         console.log('processando a requisicao de um novo pagamento');
 
@@ -76,8 +78,11 @@ module.exports = function (app) {
         var connection = app.persistencia.connectionFactory(); //caminho do arquivo do connectionFactory, é invocada através do app. Aqui é instanciada a conexão com o banco
         var pagamentoDAO = new app.persistencia.PagamentoDao(connection); //Criando uma nova instância do pagamentodao. Caminho do arquivo do PagamentoDao, é invocada através do app
 
+        
+        //salva o pagamento no banco
         pagamentoDAO.salva(pagamento, function (erro, resultado) {
 
+            //se der erro quando salvar o pagamento
             if (erro) {
 
                 console.log('Erro ao inserir no banco:', erro);
